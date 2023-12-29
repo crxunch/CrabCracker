@@ -1,31 +1,26 @@
 use std::fs::File;
 use std::io::Read;
-use std::env;
+
+mod args;
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
-    // dbg!(args);
-    let mut hashlist = "hashlist.txt";
-    let mut wordlist = "default.txt";
-    let mut algorithm = "SHA256";
-    if args.len() < 7 {
-        panic!("Missing arguments");
-    } else {
-        for i in 1..(args.len() - 1) {
-            if args[i] == "-w" {
-                wordlist = &args[i + 1];
-            }
-            if args[i] == "-h" {
-                hashlist = &args[i + 1];
-            }
-            if args[i] == "-a" {
-                algorithm = &args[i + 1];
-            }
-        }
-    }
+
+    let arguments = args::get_arguments();
+
+    let hashlist_file = arguments.get_one::<String>("hashlist").unwrap();
+    let wordlist_file = arguments.get_one::<String>("wordlist").unwrap();
+    let algorithm_type = arguments.get_one::<String>("algorithm").unwrap();
+
+    // if arguments.get_one::<String>("wordlist").unwrap(); != None {
+    //     parse_shadow();
+    // }
     
-    let hash_list = lines_from_file(hashlist);
-    println!("{:?},{:?},{:?},{:?}", hash_list, hashlist, wordlist, algorithm);
+    println!("{}", hashlist_file);
+    println!("{}", wordlist_file);
+    println!("{}", algorithm_type);
+    
+    // let hash_list = lines_from_file("hashlist.txt");
+    // println!("{:?}", hash_list);
 }
 
 
