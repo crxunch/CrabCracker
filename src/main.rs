@@ -27,7 +27,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     println!("\nGenerating wordlist...");
     let mut words: Vec<String> = Vec::new();
     let file = File::open(wordlist_file)?;
-    let mut reader = BufReader::new(
+    let reader = BufReader::new(
         DecodeReaderBytesBuilder::new()
             .encoding(Some(ISO_8859_10))
             .build(file));
