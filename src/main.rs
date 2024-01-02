@@ -1,5 +1,6 @@
 use std::fs::File;
 use std::io::Read;
+use ntlm_hash::*;
 
 mod args;
 
@@ -11,16 +12,32 @@ fn main() {
     let wordlist_file = arguments.get_one::<String>("wordlist").unwrap();
     let algorithm_type = arguments.get_one::<String>("algorithm").unwrap();
 
-    // if arguments.get_one::<String>("wordlist").unwrap(); != None {
+    let mut cracked_passwords: Vec<String> = Vec::new();
+
+    // if arguments.get_one::<String>("shadow").unwrap(); != None {
     //     parse_shadow();
     // }
-    
-    println!("{}", hashlist_file);
-    println!("{}", wordlist_file);
-    println!("{}", algorithm_type);
-    
-    // let hash_list = lines_from_file("hashlist.txt");
-    // println!("{:?}", hash_list);
+
+    let mut hashes = lines_from_file(hashlist_file);
+    let words = lines_from_file(wordlist_file);
+
+    println!("\nCracking...\n");
+
+    for word in &words {
+        if word.len() > 15 {
+            continue
+        }
+        for j in 0..(hashes.len()) {
+            if hashes[j] == ntlm_hash(&word) {
+                cracked_passwords.push(String::from(format!("{}: {}", word, hashes[j])));
+                hashes.remove(j);
+                break
+            }
+        }
+    }
+
+    println!("Cracked Hashes: \n{:#?}", cracked_passwords);
+    println!("\nUncracked Hashes: \n{:#?}", hashes);
 }
 
 
@@ -33,9 +50,8 @@ fn lines_from_file(filename: &str) -> Vec<String> {
     file.read_to_string(&mut file_contents)
         .ok()
         .expect("failed to read!");
-    let mut lines: Vec<String> = file_contents.split("\n")
+    let lines: Vec<String> = file_contents.split("\n")
         .map(|s: &str| s.to_string())
         .collect();
-    lines.remove(lines.len() - 1);
     lines
 }
