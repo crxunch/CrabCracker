@@ -12,3 +12,5 @@ clap = { version = "4.4.12", features = ["cargo"] }
 md-5 = "0.10.6"
 ntlm-hash = "0.1.0"
 sha2 = "0.10.8"
+encoding_rs = "0.8.33"
+encoding_rs_io = "0.1.7"
