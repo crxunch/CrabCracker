@@ -7,13 +7,11 @@ CrabCracker is currently in the very first stage of production and while it can 
 
   1. It only supports NTLM hashing.
   2. It does not support multi-threading.
-  3. It cannot parse files with characters that are not UTF-8 encoded.
 
 CrabCracker is soon to have the following improvements:
 
   1. Support for multiple hashing algorithms.
   2. Multi-threading.
-  3. Support for files containing characters that are not UTF-8 encoded.
   4. Hashlist parsing:
     a. Organize hashlist by commonality (most often occuring hashes move to front of list).
     b. Remove duplicate hashes.
