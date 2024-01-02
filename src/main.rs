@@ -1,10 +1,13 @@
+use std::error::Error;
 use std::fs::File;
-use std::io::Read;
+use std::io::{BufReader, BufRead, Read};
 use ntlm_hash::*;
+use encoding_rs::ISO_8859_10;
+use encoding_rs_io::DecodeReaderBytesBuilder;
 
 mod args;
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
 
     let arguments = args::get_arguments();
 
@@ -18,8 +21,22 @@ fn main() {
     //     parse_shadow();
     // }
 
+    println!("\nGenerating hashlist...");
     let mut hashes = lines_from_file(hashlist_file);
-    let words = lines_from_file(wordlist_file);
+
+    println!("\nGenerating wordlist...");
+    let mut words: Vec<String> = Vec::new();
+    let file = File::open(wordlist_file)?;
+    let mut reader = BufReader::new(
+        DecodeReaderBytesBuilder::new()
+            .encoding(Some(ISO_8859_10))
+            .build(file));
+    for line in reader.lines() {
+        match line {
+            Ok(word) => words.push(word),
+            Err(..) => continue,
+        };
+    }
 
     println!("\nCracking...\n");
 
@@ -27,6 +44,7 @@ fn main() {
         if word.len() > 15 {
             continue
         }
+
         for j in 0..(hashes.len()) {
             if hashes[j] == ntlm_hash(&word) {
                 cracked_passwords.push(String::from(format!("{}: {}", word, hashes[j])));
@@ -38,6 +56,8 @@ fn main() {
 
     println!("Cracked Hashes: \n{:#?}", cracked_passwords);
     println!("\nUncracked Hashes: \n{:#?}", hashes);
+
+    return Ok(());
 }
 
 
