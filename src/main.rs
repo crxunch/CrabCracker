@@ -1,13 +1,13 @@
 use std::error::Error;
 use std::fs::File;
-use std::io::{BufReader, BufRead, Read};
+use std::io::{BufReader, BufRead};
 use ntlm_hash::*;
 use encoding_rs::ISO_8859_10;
 use encoding_rs_io::DecodeReaderBytesBuilder;
 
 mod args;
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() {
 
     let arguments = args::get_arguments();
 
@@ -22,21 +22,16 @@ fn main() -> Result<(), Box<dyn Error>> {
     // }
 
     println!("\nGenerating hashlist...");
-    let mut hashes = lines_from_file(hashlist_file);
+    let mut hashes = match generate_list(hashlist_file) {
+        Ok(items) => items,
+        Err(_) => panic!("Error generating hashlist."),
+    };
 
     println!("\nGenerating wordlist...");
-    let mut words: Vec<String> = Vec::new();
-    let file = File::open(wordlist_file)?;
-    let reader = BufReader::new(
-        DecodeReaderBytesBuilder::new()
-            .encoding(Some(ISO_8859_10))
-            .build(file));
-    for line in reader.lines() {
-        match line {
-            Ok(word) => words.push(word),
-            Err(..) => continue,
-        };
-    }
+    let words = match generate_list(wordlist_file) {
+        Ok(items) => items,
+        Err(_) => panic!("Error generating wordlist."),
+    };
 
     println!("\nCracking...\n");
 
@@ -56,22 +51,24 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     println!("Cracked Hashes: \n{:#?}", cracked_passwords);
     println!("\nUncracked Hashes: \n{:#?}", hashes);
-
-    return Ok(());
 }
 
+fn generate_list(filename: &str) -> Result<Vec<String>, Box<dyn Error>> {
+    let mut items: Vec<String> = Vec::new();
+    
+    let file = File::open(filename)?;
+    let reader = BufReader::new(
+        DecodeReaderBytesBuilder::new()
+            .encoding(Some(ISO_8859_10))
+            .build(file)
+    );
 
-fn lines_from_file(filename: &str) -> Vec<String> {
-    let mut file = match File::open(filename) {
-        Ok(file) => file,
-        Err(_) => panic!("no such file"),
-    };
-    let mut file_contents = String::new();
-    file.read_to_string(&mut file_contents)
-        .ok()
-        .expect("failed to read!");
-    let lines: Vec<String> = file_contents.split("\n")
-        .map(|s: &str| s.to_string())
-        .collect();
-    lines
+    for line in reader.lines() {
+        match line {
+            Ok(item) => items.push(item),
+            Err(_) => continue,
+        };
+    }
+
+    Ok(items)
 }
