@@ -14,7 +14,7 @@ CrabCracker is soon to have the following improvements:
 1. Support for multiple hashing algorithms.
 2. Multi-threading.
 3. Hashlist parsing:
-    1. Organize hashlist by commonality (most often occurring hashes move to front of list).
+    1. Organize hashlist by frequency (most often occurring hashes move to front of list).
     2. Remove duplicate hashes.
     3. Automatically parse `/etc/shadow` files.
 4. Support for output files.
