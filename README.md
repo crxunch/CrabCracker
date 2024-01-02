@@ -2,21 +2,22 @@
 
 ## Description
 
-CrabCracker is a barebones password cracking tool written in Rust.
+CrabCracker is a bare-bones password cracking tool written in Rust.
+
 CrabCracker is currently in the very first stage of production and while it can crack password hashes, it is limited by the following:
 
-  1. It only supports NTLM hashing.
-  2. It does not support multi-threading.
+1. It only supports NTLM hashing.
+2. It does not support multi-threading.
 
 CrabCracker is soon to have the following improvements:
 
-  1. Support for multiple hashing algorithms.
-  2. Multi-threading.
-  4. Hashlist parsing:
-    a. Organize hashlist by commonality (most often occuring hashes move to front of list).
-    b. Remove duplicate hashes.
-    c. Automatically parse `/etc/shadow` files.
-  5. Support for output files.
+1. Support for multiple hashing algorithms.
+2. Multi-threading.
+3. Hashlist parsing:
+    1. Organize hashlist by commonality (most often occurring hashes move to front of list).
+    2. Remove duplicate hashes.
+    3. Automatically parse `/etc/shadow` files.
+4. Support for output files.
 
 ## Usage
 
