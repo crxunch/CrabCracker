@@ -28,8 +28,6 @@ fn main() {
         _ => panic!("not a recognized hash"),
     };
 
-    println!("{:?}", hash_fn);
-
     println!("\nGenerating hashlist...");
     let mut hashes = match generate_list(hashlist_file) {
         Ok(items) => items,
