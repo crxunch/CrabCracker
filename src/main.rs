@@ -6,6 +6,7 @@ use encoding_rs::ISO_8859_10;
 use encoding_rs_io::DecodeReaderBytesBuilder;
 
 mod args;
+mod hash_algorithms;
 
 fn main() {
 
@@ -20,6 +21,14 @@ fn main() {
     // if arguments.get_one::<String>("shadow").unwrap(); != None {
     //     parse_shadow();
     // }
+
+    let hash_fn = match algorithm_type.as_str() {
+        "0" => ntlm_hash,
+        "1" => hash_algorithms::sha256_hash,
+        _ => panic!("not a recognized hash"),
+    };
+
+    println!("{:?}", hash_fn);
 
     println!("\nGenerating hashlist...");
     let mut hashes = match generate_list(hashlist_file) {
@@ -41,7 +50,7 @@ fn main() {
         }
 
         for j in 0..(hashes.len()) {
-            if hashes[j] == ntlm_hash(&word) {
+            if hashes[j] == hash_fn(&word) {
                 cracked_passwords.push(String::from(format!("{}: {}", word, hashes[j])));
                 hashes.remove(j);
                 break
