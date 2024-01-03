@@ -23,7 +23,7 @@ pub fn get_arguments() -> ArgMatches {
     .arg(
         Arg::new("shadow")
             .long("shadow")
-            .help("Tells CrabCracker that the supplied file is an /etc/shadow file. An argument is required but will not be processed, pass whatever you want.")
+            .help("Tells clasher that the supplied file is an /etc/shadow file. An argument is required but will not be processed, pass whatever you want.")
     )
     .about("Barebones password cracking tool written entirely in Rust.")
     .get_matches();
