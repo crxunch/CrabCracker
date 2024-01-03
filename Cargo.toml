@@ -1,6 +1,6 @@
 [package]
-name = "CrabCracker"
-version = "0.1.0"
+name = "clasher"
+version = "0.8.0"
 edition = "2021"
 
 authors = ["Christian Christovich"]
