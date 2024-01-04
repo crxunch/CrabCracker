@@ -33,6 +33,7 @@ fn main() {
         "0" => ntlm_hash,
         "1" => hash_algorithms::sha256_hash,
         "11" => hash_algorithms::sha512_hash,
+        "2" => hash_algorithms::md5_hash,
         _ => panic!("not a recognized hash"),
     };
 
