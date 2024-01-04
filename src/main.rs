@@ -4,6 +4,8 @@ use std::io::{BufReader, BufRead};
 use ntlm_hash::*;
 use encoding_rs::ISO_8859_10;
 use encoding_rs_io::DecodeReaderBytesBuilder;
+// use std::thread;
+// use std::time::Duration;
 
 mod args;
 mod hash_algorithms;
@@ -18,13 +20,19 @@ fn main() {
 
     let mut cracked_passwords: Vec<String> = Vec::new();
 
+    let max_pass_len: usize = match algorithm_type.as_str() {
+        "0" => 15,
+        _ => 18_446_744_073_709_551_615,
+    };
+
     // if arguments.get_one::<String>("shadow").unwrap(); != None {
-    //     parse_shadow();
+    //     parse_sshadow();
     // }
 
     let hash_fn = match algorithm_type.as_str() {
         "0" => ntlm_hash,
         "1" => hash_algorithms::sha256_hash,
+        "11" => hash_algorithms::sha512_hash,
         _ => panic!("not a recognized hash"),
     };
 
@@ -43,10 +51,9 @@ fn main() {
     println!("\nCracking...\n");
 
     for word in &words {
-        if word.len() > 15 {
+        if word.len() > max_pass_len {
             continue
         }
-
         for j in 0..(hashes.len()) {
             if hashes[j] == hash_fn(&word) {
                 cracked_passwords.push(String::from(format!("{}: {}", word, hashes[j])));
@@ -58,6 +65,7 @@ fn main() {
 
     println!("Cracked Hashes: \n{:#?}", cracked_passwords);
     println!("\nUncracked Hashes: \n{:#?}", hashes);
+    
 }
 
 fn generate_list(filename: &str) -> Result<Vec<String>, Box<dyn Error>> {
