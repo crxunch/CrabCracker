@@ -1,4 +1,4 @@
-use sha2::{Digest, Sha256};
+use sha2::{Digest, Sha256, Sha512};
 
 pub fn sha256_hash(input: &str) -> String {
     let mut hasher = Sha256::new();
