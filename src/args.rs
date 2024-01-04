@@ -18,7 +18,7 @@ pub fn get_arguments() -> ArgMatches {
         Arg::new("algorithm")
             .short('a')
             .required(true)
-            .help("The hashing algorithm in use.")
+            .help("The hashing algorithm in use. Options include:\n    0 - NTLM\n    1 - SHA256\n   11 - SHA512\n    2 - MD5")
     )
     .arg(
         Arg::new("shadow")
