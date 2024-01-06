@@ -7,21 +7,29 @@ mod file_handling;
 
 fn main() {
 
+    // Get command line arguments and store them in their appropriate variables.
+
     let arguments = args::get_arguments();
 
     let hashlist_file = arguments.get_one::<String>("hashlist").unwrap();
     let wordlist_file = arguments.get_one::<String>("wordlist").unwrap();
     let algorithm_type = arguments.get_one::<String>("algorithm").unwrap();
 
+    // Max password length used for NTLM hashing
+    
     let max_pass_len: usize = match algorithm_type.as_str() {
         "0" => 15,
         _ => 18_446_744_073_709_551_615,
     };
 
+    // Soon to implement functionality for parsing /etc/passwd files
+
     // if arguments.get_one::<String>("shadow").unwrap(); != None {
     //     parse_shadow();
     // }
 
+    // Use a file pointer to turn the user supplied hashing algorithm into a hashing function
+    
     let hash_fn = match algorithm_type.as_str() {
         "0" => ntlm_hash,
         "1" => hash_algorithms::sha256_hash,
@@ -44,6 +52,8 @@ fn main() {
 
     println!("\nCracking...\n");
 
+    // Create thread for each hash in the supplied hashlist and crack that hash against the supplied wordlist.
+
     let mut handles: Vec<JoinHandle<()>> = Vec::new();
 
     for hash in hashes {
@@ -63,6 +73,8 @@ fn main() {
 
         handles.push(handle);
     }
+
+    // Join each handle
 
     for handle in handles {
         handle.join().expect("Error joining thread");
