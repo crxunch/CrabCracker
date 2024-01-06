@@ -4,7 +4,7 @@
 
 clasher (or, the Command Line hASH crackER) is a bare-bones password recovery tool written in Rust.
 
-clasher is currently in the first stage of production and is soon to have the following improvements:
+clasher is currently in the first stage of production and might onw day have the following improvements:
 
 1. Hashlist parsing:
     1. Organize hashlist by frequency (most often occurring hashes move to front of list).
