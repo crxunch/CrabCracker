@@ -22,7 +22,7 @@ fn main() {
         _ => 18_446_744_073_709_551_615,
     };
 
-    // Soon to implement functionality for parsing /etc/passwd files
+    // Soon to implement functionality for parsing /etc/shadow files
 
     // if arguments.get_one::<String>("shadow").unwrap(); != None {
     //     parse_shadow();
