@@ -28,5 +28,5 @@ pub fn get_arguments() -> ArgMatches {
     .about("Barebones password cracking tool written entirely in Rust.")
     .get_matches();
 
-    return match_result
+    match_result
 }
