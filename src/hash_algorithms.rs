@@ -1,5 +1,5 @@
 use sha2::{Digest, Sha256, Sha512};
-use md5;
+
 
 pub fn sha256_hash(input: &str) -> String {
     let mut hasher = Sha256::new();
@@ -7,7 +7,7 @@ pub fn sha256_hash(input: &str) -> String {
     let result = hasher.finalize();
     let hex_string = result.iter().map(|byte| format!("{:02x}", byte)).collect::<String>();
 
-    return hex_string
+    hex_string
 }
 
 pub fn sha512_hash(input: &str) -> String {
@@ -16,7 +16,7 @@ pub fn sha512_hash(input: &str) -> String {
     let result = hasher.finalize();
     let hex_string = result.iter().map(|byte| format!("{:02x}", byte)).collect::<String>();
 
-    return hex_string
+    hex_string
 }
 
 pub fn md5_hash(input: &str) -> String {
